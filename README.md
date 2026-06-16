@@ -19,6 +19,12 @@ Loop Trust Kit is that missing layer. It's tool-agnostic (Claude Code **and**
 Codex), it lives on disk (the loop's memory spine — *the agent forgets, the repo
 doesn't*), and it's built around one artifact: the **Evidence Report**.
 
+**What it is — and isn't.** A *trust layer*, **not a loop engine.** It doesn't
+loop anything and doesn't intercept your prompts; it makes the output of the
+loops you already run carry proof. The "loop" in the name is the *context* (you're
+designing agentic loops); the kit's job is the *trust*. You bring the loop — or
+wire one (see [How it runs](#how-it-runs)) — and the kit makes its "done" honest.
+
 ## The idea in one picture
 
 ```
@@ -70,14 +76,32 @@ npm i -g loop-trust-kit       # provides loop-validate, loop-budget, loop-triage
 `.claude/agents/*.md`), `skills/loop-triage/`, and `scripts/` into your repo.
 Everything is plain files; nothing is vendor-locked.
 
-## Use it in 3 steps
+## How it runs
 
-1. After your maker claims done, hand the work to **`loop-verifier`**.
-2. It re-runs the claims, attacks them, and writes an **Evidence Report** to `.loop/runs/`.
-3. Run `node scripts/validate-report.mjs` (or `/loop-trust-kit:validate`), then read
-   only `risk` and `needs_human`. That's your 30-second triage.
+The plugin **does not intercept your prompts.** It gives you two agents, a report
+format, and three scripts — they run when *you* invoke them, or when a loop you
+wired calls them. Two ways to use it:
 
-For the full unattended loop (cadence → maker → verifier → triage → budget), see
+- **One pass (you drive):** invoke `loop-maker` for a task, then hand its work to
+  `loop-verifier`. One maker → checker → report. (This is what most people start with.)
+- **Wired loop (runs unattended):** a *driver* — `/goal`, `/loop`, or an
+  automation — repeats that maker → checker step over many findings on its own.
+
+The mental model that trips people up: **`loop-maker` and `loop-verifier` are two
+*steps*; the loop is the *engine* (`/goal` / `/loop` / automation) that repeats
+them.** The kit ships the steps and the Evidence Report; *you* choose the engine.
+The maker never loops itself.
+
+## Use it — the one-pass flow
+
+1. Invoke **`loop-maker`** to implement a task; it finishes by naming the exact
+   command that proves each claim, and never grades itself.
+2. Hand its handoff to **`loop-verifier`** — a *different* agent. It re-runs the
+   claims, attacks them, and writes an **Evidence Report** to `.loop/runs/`.
+3. Run `node scripts/validate-report.mjs` (or `/loop-trust-kit:validate`), then
+   read only `risk` and `needs_human`. That's your 30-second triage.
+
+To run this unattended over many findings, wire a driver — see
 [`docs/loop-recipe.md`](./docs/loop-recipe.md).
 
 ## Design tenets
