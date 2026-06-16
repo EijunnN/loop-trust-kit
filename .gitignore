@@ -4,3 +4,7 @@ node_modules
 
 # Local, per-machine budget ledger — never committed.
 .loop/budget.json
+
+# Local plugin enable/disable state (written by `/plugin install`); not shipped.
+.claude/settings.json
+.claude/settings.local.json
