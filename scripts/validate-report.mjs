@@ -422,6 +422,13 @@ function validate(fm) {
           E(`evidence[${k}] has method 'none' on a 'done' report — a naked claim; move it to unverified`);
         }
 
+        // A 'command' claim on a done report must name the command — independent
+        // of verified_by. A method:command entry with no command is a naked
+        // "I ran something" claim and must fail.
+        if (isDone && e.method === 'command' && (e.command == null || String(e.command).trim() === '')) {
+          E(`evidence[${k}] has method 'command' on a 'done' report but no command — a naked claim; name the exact command`);
+        }
+
         // verified_by: checker requires a command and an integer exit_code.
         if (e.verified_by === 'checker') {
           if (e.command == null || String(e.command).trim() === '') {

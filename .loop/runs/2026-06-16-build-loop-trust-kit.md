@@ -75,14 +75,13 @@ evidence:
     verified_by: checker
 unverified:
   - "Live-harness behaviour was NOT exercised: the maker/verifier agents were not loaded into a real Claude Code or Codex run, so harness acceptance of the frontmatter/TOML schema and the maker's runtime refusal to self-grade are unproven (parse-level only)."
-  - "`/goal`: the recipe presents it as a real run-until-condition command in both tools, per the loop-engineering source the user provided. The workflow's verifier could NOT confirm it from its environment (which exposes only /loop and /schedule). Existence and exact syntax are unconfirmed against current tool docs."
+  - "RESOLVED post-build via web docs: `/goal` is real in both tools (Claude Code v2.1.139, May 2026; Codex `/goal`, the 'Ralph loop'). Nuance found and fixed in the recipe: Claude Code's `/goal` evaluator judges *surfaced conversation output*, not commands/files, so the stop condition must be demonstrable from what the loop prints."
   - "Codex specifics (Automations tab, built-in worktrees, @-mention agent invocation) are asserted from the same source, not verified against Codex docs."
   - "Accepted, SPEC-compliant hardening gap: a status:done report whose evidence is method:command but carries no command and is verified_by:maker passes the validator (SPEC rule 2 only constrains verified_by:checker). Left as-is per the literal SPEC; tracked for a future SPEC bump."
   - "cost.usd_estimate is rough; the harness reported a single combined subagent-token total (568,347), not an input/output split, so input_tokens is recorded as 0 and the total is placed in output_tokens — an honest gap, named not hidden."
 risk: medium
 needs_human:
-  - "Confirm `/goal` is a real, supported run-until-condition command in Claude Code and/or Codex against current docs before relying on Stage 2 of the recipe; if it is not, swap it for `/loop`."
-  - "Confirm the Codex specifics in the recipe (Automations tab cron, built-in worktrees, @-mention invocation) against current Codex docs."
+  - "Verify the exact Codex agent-invocation syntax (@-mention vs slash) and built-in-worktree teardown against current Codex docs. `/goal` itself and Automations are confirmed; the invocation surface is not."
 cost:
   input_tokens: 0
   output_tokens: 568347
@@ -113,9 +112,10 @@ check. Maker/checker did its job; the human (with extra context) made the call.
 
 ## What I could not prove
 This is the section to read. Two things are real but unconfirmed: the agents
-have never run inside an actual Claude Code/Codex harness (only parsed), and
-`/goal` plus the Codex-specific surface in the recipe are asserted from a blog
-source, not verified against current tool docs — both are in `needs_human`. The
+have never run inside an actual Claude Code/Codex harness (only parsed). `/goal`
+is now confirmed real in both tools (docs), and the recipe was corrected for how
+Claude Code's evaluator reads surfaced output; only the exact Codex invocation
+surface remains in `needs_human`. The
 validator also has a known, SPEC-compliant hardening gap (a maker-verified
 `method:command` claim with no command slips through), left as-is on purpose and
 tracked. The kit verifies its own *artifacts*; it does not verify the *tools'*

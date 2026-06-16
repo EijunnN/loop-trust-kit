@@ -114,9 +114,17 @@ condition is *every finding has a report*, not *the model feels done*.
   Enumerate failing checks (lint, typecheck, test, audit) on the default branch.
   For EACH failure, treat it as one finding with a stable slug (e.g. test-auth-revoke).
   Loop over findings one at a time using the per-finding procedure below.
-  DONE when: every finding has a matching .loop/runs/<date>-<slug>.md that passes
-             `node scripts/validate-report.mjs`.
+  DONE when: for every finding I have run `node scripts/validate-report.mjs <report>`
+             and shown its PASS / exit 0 in this conversation.
 ```
+
+> **Claude Code `/goal` reads what you *say*, not what you run.** Its evaluator
+> (Haiku, after every turn) judges your stop condition against output already
+> surfaced in the conversation — it does not run commands or read files itself.
+> So phrase the condition as something the loop *prints*: surface each validator
+> `PASS` in-conversation; don't expect the evaluator to run the validator. Codex's
+> `/goal` differs (it verifies against current repo state), but writing the
+> condition as demonstrable output is the portable habit.
 
 A finding is the unit of the loop. Keep them independent — one finding, one
 worktree, one report. Don't let the maker batch five fixes into one diff; that
@@ -363,7 +371,8 @@ For finding <slug>:
   5. Run `node scripts/loop-budget.mjs`. If it exits non-zero, stop the loop.
   6. If verdict is refuted/failed: leave the report, discard the branch, move on.
      If confirmed: keep the branch (PR it) and move on.
-DONE when every finding has a passing Evidence Report in .loop/runs/.
+DONE when, for every finding, the validator's PASS output has been shown in this
+conversation (Claude Code's /goal evaluator reads surfaced output, not files).
 Surface to the human only reports with risk medium|high or non-empty needs_human.
 ```
 
