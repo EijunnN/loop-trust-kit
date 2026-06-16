@@ -92,17 +92,33 @@ human reads first.
 
 ## Rules that make the format mean something
 
-1. **No naked claims.** A `done` status with an `evidence` entry whose `method`
-   is `none` is invalid. If you can't run it, it goes in `unverified`, not `evidence`.
-2. **`verified_by: checker` requires re-execution.** The checker must run the
-   command itself. Trusting the maker's pasted output defeats the purpose.
-3. **`maker.agent != checker.agent`.** Enforce it. A report where they match is
-   self-grading and should be rejected by tooling.
-4. **`unverified` is never empty by default.** "Nothing unverified" is itself a
+These are exactly what `scripts/validate-report.mjs` enforces. Rules 1–3 are the
+teeth of "a claim is not evidence" and only tighten `done` reports.
+
+1. **No naked claims on a `done` report.** An `evidence` entry whose `method` is
+   `none` is invalid on `done`. And a `method: command` entry must carry a
+   non-empty `command` — "I ran something" with no command named is just as naked.
+   If you can't run it, it goes in `unverified`, not `evidence`.
+2. **`done` evidence is checker-attested.** On a `done` report, **every**
+   `evidence` entry must be `verified_by: checker`. A maker- or self-attested
+   claim is not proof — it belongs in `unverified` (and if it's load-bearing, the
+   status is `partial`, not `done`). This is `maker != checker` applied to the
+   evidence itself: the skeptic re-ran it, or it isn't evidence.
+3. **`verified_by: checker` requires a command and an integer `exit_code`.** The
+   checker must have actually run it. A consequence: a checker's *inspection-only*
+   judgment (no command) is **not** admissible as `evidence` on a `done` report —
+   put it in the body's prose or, if it's a gap, in `unverified`. Proof on a
+   `done` report is a re-executed command with an exit code, full stop.
+4. **`maker.agent != checker.agent`.** Enforce it. A report where they match is
+   self-grading and is rejected by tooling. (Note: the validator checks the
+   *label*, not who actually ran the command — that integrity comes from the loop
+   running two distinct agents. The rule shapes honest reports; it can't catch a
+   maker who lies in the `verified_by` field.)
+5. **`unverified` is never empty by default.** "Nothing unverified" is itself a
    strong claim that needs justification. Honest loops almost always have gaps.
-5. **`risk` is the checker's call, not the maker's.** The maker is optimistic by
+6. **`risk` is the checker's call, not the maker's.** The maker is optimistic by
    construction; the risk signal must come from the skeptic.
-6. **Append-only.** Re-running the loop on the same task writes a *new* file with
+7. **Append-only.** Re-running the loop on the same task writes a *new* file with
    a new `run_id`. History is the point — you diff yesterday against today.
 
 ## Why these fields (and not others)
@@ -120,3 +136,9 @@ human reads first.
 
 `loop_trust_kit: 1` is the format version. Tooling MUST refuse a report whose
 version it does not understand rather than guess.
+
+Rules 1–3 were tightened within v1 (they were added after the first cut). They
+constrain only `done` reports, and any honest report already complies — proof
+lives in checker-run `evidence`, gaps live in `unverified` — so no version bump
+was needed. A change that would invalidate a *previously honest* report (not just
+a sloppy one) is what forces a `loop_trust_kit` bump; see `CONTRIBUTING.md`.
