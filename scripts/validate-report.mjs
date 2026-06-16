@@ -429,6 +429,19 @@ function validate(fm) {
           E(`evidence[${k}] has method 'command' on a 'done' report but no command — a naked claim; name the exact command`);
         }
 
+        // Checker-attested evidence on a done report. Maker != checker, and a
+        // claim is not evidence: every entry that counts as proof on a 'done'
+        // report must have been re-executed by the checker. A maker-attested (or
+        // unattested) claim belongs in 'unverified', not 'evidence'. This closes
+        // the hole where a done report's command claim with verified_by:maker and
+        // no exit_code still passed.
+        if (isDone && e.verified_by !== 'checker') {
+          E(
+            `evidence[${k}] is verified_by ${JSON.stringify(e.verified_by ?? null)} on a 'done' report — ` +
+              'only checker-verified evidence counts as proof; move it to unverified'
+          );
+        }
+
         // verified_by: checker requires a command and an integer exit_code.
         if (e.verified_by === 'checker') {
           if (e.command == null || String(e.command).trim() === '') {
