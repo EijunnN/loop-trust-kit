@@ -116,10 +116,4 @@ To run this unattended over many findings, wire a driver — see
    and is the most valuable part of the report.
 5. **Tool-agnostic.** Nothing here assumes one vendor. Design for the *shape*.
 
-## Why this is the gift, not the product
-
-The fact that adversarial verification is being baked into the tools is the
-*validation*, not the competition — because what ships is locked, ephemeral, and
-author-dependent. This kit is the portable, persistent, reviewable layer on top.
-
 Build the loop. Stay the engineer.
