@@ -32,4 +32,5 @@ Any update to this policy is committed to this repository, with the date above.
 
 ## Contact
 
-Privacy questions: eijunxd12@gmail.com
+Privacy questions: open an issue at
+https://github.com/EijunnN/loop-trust-kit/issues
