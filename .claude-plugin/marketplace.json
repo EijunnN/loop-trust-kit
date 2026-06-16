@@ -1,0 +1,19 @@
+{
+  "name": "loop-trust-kit",
+  "owner": {
+    "name": "EijunnN",
+    "email": "eijunxd12@gmail.com"
+  },
+  "description": "The Loop Trust Kit — make a coding loop's done carry its proof.",
+  "plugins": [
+    {
+      "name": "loop-trust-kit",
+      "source": ".",
+      "displayName": "Loop Trust Kit",
+      "description": "Maker/checker agents, an Evidence Report validator, a budget guard, and triage — tool-agnostic, on-disk.",
+      "license": "MIT",
+      "category": "development",
+      "keywords": ["agents", "verification", "loop"]
+    }
+  ]
+}

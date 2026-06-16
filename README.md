@@ -48,13 +48,37 @@ ships with its receipts attached.
 | End-to-end loop recipe | [`docs/loop-recipe.md`](./docs/loop-recipe.md) | ✅ |
 | Worked examples (done · partial · refuted) | [`.loop/runs/`](./.loop/runs/) | ✅ |
 
-## Quickstart
+## Install
 
-1. Drop the verifier into your tool: copy `.claude/agents/loop-verifier.md`
-   (Claude Code) or `.codex/agents/loop-verifier.toml` (Codex) into your repo.
-2. In your loop, after the maker claims done, hand the work to `loop-verifier`.
-3. It writes an Evidence Report to `.loop/runs/`. Read the `risk` and
-   `needs_human` fields first; that's your 30-second triage.
+**Claude Code (plugin) — agents, skill, and commands in one install:**
+
+```
+/plugin marketplace add EijunnN/loop-trust-kit
+/plugin install loop-trust-kit@loop-trust-kit
+```
+
+You get the `loop-maker` and `loop-verifier` subagents, the `loop-triage` skill,
+and the `/loop-trust-kit:validate` · `:triage` · `:budget` commands.
+
+**The CLI (npm) — the dependency-free scripts on their own:**
+
+```
+npm i -g loop-trust-kit       # provides loop-validate, loop-budget, loop-triage
+```
+
+**Codex / anything else — copy the files:** drop `.codex/agents/*.toml` (or
+`.claude/agents/*.md`), `skills/loop-triage/`, and `scripts/` into your repo.
+Everything is plain files; nothing is vendor-locked.
+
+## Use it in 3 steps
+
+1. After your maker claims done, hand the work to **`loop-verifier`**.
+2. It re-runs the claims, attacks them, and writes an **Evidence Report** to `.loop/runs/`.
+3. Run `node scripts/validate-report.mjs` (or `/loop-trust-kit:validate`), then read
+   only `risk` and `needs_human`. That's your 30-second triage.
+
+For the full unattended loop (cadence → maker → verifier → triage → budget), see
+[`docs/loop-recipe.md`](./docs/loop-recipe.md).
 
 ## Design tenets
 

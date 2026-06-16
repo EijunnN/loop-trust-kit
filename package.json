@@ -4,6 +4,13 @@
   "description": "Make a loop's \"done\" carry its proof. A tool-agnostic, on-disk trust layer built around the Evidence Report.",
   "type": "module",
   "license": "MIT",
+  "author": "EijunnN <eijunxd12@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EijunnN/loop-trust-kit.git"
+  },
+  "homepage": "https://github.com/EijunnN/loop-trust-kit#readme",
+  "bugs": "https://github.com/EijunnN/loop-trust-kit/issues",
   "bin": {
     "loop-validate": "./scripts/validate-report.mjs",
     "loop-budget": "./scripts/loop-budget.mjs",

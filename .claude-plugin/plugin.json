@@ -1,0 +1,25 @@
+{
+  "name": "loop-trust-kit",
+  "displayName": "Loop Trust Kit",
+  "version": "0.1.0",
+  "description": "Make a coding loop's done carry its proof: maker/checker agents, an Evidence Report validator, a budget guard, and triage. Tool-agnostic, on-disk.",
+  "author": {
+    "name": "EijunnN",
+    "email": "eijunxd12@gmail.com"
+  },
+  "homepage": "https://github.com/EijunnN/loop-trust-kit#readme",
+  "repository": "https://github.com/EijunnN/loop-trust-kit",
+  "license": "MIT",
+  "keywords": [
+    "agents",
+    "verification",
+    "evidence-report",
+    "loop",
+    "claude-code",
+    "codex"
+  ],
+  "agents": [
+    "./.claude/agents/loop-maker.md",
+    "./.claude/agents/loop-verifier.md"
+  ]
+}
