@@ -1,0 +1,35 @@
+{
+  "name": "loop-trust-kit",
+  "version": "0.1.0",
+  "description": "Make a loop's \"done\" carry its proof. A tool-agnostic, on-disk trust layer built around the Evidence Report.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "loop-validate": "./scripts/validate-report.mjs",
+    "loop-budget": "./scripts/loop-budget.mjs",
+    "loop-triage": "./scripts/triage.mjs"
+  },
+  "scripts": {
+    "validate": "node ./scripts/validate-report.mjs",
+    "budget": "node ./scripts/loop-budget.mjs",
+    "triage": "node ./scripts/triage.mjs",
+    "test": "npm run validate"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "scripts/",
+    "SPEC.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "evidence-report",
+    "agents",
+    "verification",
+    "claude-code",
+    "codex",
+    "loop"
+  ]
+}
